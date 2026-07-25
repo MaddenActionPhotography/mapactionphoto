@@ -4,12 +4,12 @@ export const metadata = {
   title: "Madden Action Photography — Today's Game. Tomorrow's Memory.",
   description:
     "Professional action photography and custom digital athlete artwork for youth and adult athletes across the Portland & Vancouver metro. 100% digital delivery.",
-  metadataBase: new URL("https://mapactionphoto.com"),
+  metadataBase: new URL("https://www.madactionphotos.com"),
   openGraph: {
     title: "Madden Action Photography",
     description:
       "Today's Game. Tomorrow's Memory. Action photography & custom athlete artwork — Portland & Vancouver metro.",
-    url: "https://mapactionphoto.com",
+    url: "https://www.madactionphotos.com",
     siteName: "Madden Action Photography",
     type: "website",
   },
