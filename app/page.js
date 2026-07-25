@@ -169,43 +169,15 @@ export default function Home() {
               </p>
             </div>
             <div className="product">
-              <span className="ratio">Collectible</span>
-              <h3>Trading Card</h3>
-              <p>
-                Your athlete on their own card — front action shot, back
-                stats. Made to be traded, kept, and shown off.
-              </p>
-            </div>
-            <div className="product">
-              <span className="ratio">Cover story</span>
-              <h3>Magazine Cover</h3>
-              <p>
-                A magazine-style cover treatment that puts your athlete on the
-                front page of their own season.
-              </p>
-            </div>
-            <div className="product">
               <span className="ratio">Everyday</span>
               <h3>Phone Wallpaper</h3>
               <p>Their highlight, on their lock screen. Sized perfectly for any phone.</p>
             </div>
-            <div className="product">
-              <span className="ratio">Class of…</span>
-              <h3>Senior Graphic</h3>
-              <p>
-                Senior-year artwork that marks the milestone — built for
-                announcements, parties, and posts.
-              </p>
-            </div>
-            <div className="product">
-              <span className="ratio">Squad</span>
-              <h3>Team Poster</h3>
-              <p>
-                The whole roster, one design. Team posters, schedule graphics,
-                and season recap collages.
-              </p>
-            </div>
           </div>
+          <p className="coming-soon">
+            <b>Coming soon:</b> trading cards, magazine covers, senior
+            graphics &amp; team posters.
+          </p>
         </div>
       </section>
 
