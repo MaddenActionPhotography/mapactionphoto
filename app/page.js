@@ -3,10 +3,9 @@ export default function Home() {
     <>
       <nav>
         <div className="wrap nav-inner">
-          <div className="logo">
-            <span className="mark">M.A.P.</span>
-            <span className="sub">Madden Action Photography</span>
-          </div>
+          <a className="logo" href="#top" aria-label="M.A.P. Sports Photography home">
+            <img src="/map-logo.png" alt="M.A.P. Sports Photography" />
+          </a>
           <div className="nav-links">
             <a href="#pricing">Pricing</a>
             <a href="#artwork">Athlete Artwork</a>
@@ -20,7 +19,7 @@ export default function Home() {
         </div>
       </nav>
 
-      <header>
+      <header id="top">
         <div className="streaks" aria-hidden="true">
           <div className="streak s1"></div>
           <div className="streak s2"></div>
@@ -54,33 +53,14 @@ export default function Home() {
               100% digital delivery — print anywhere you choose
             </div>
           </div>
-          <div className="frame-duo">
-            <div
-              className="vframe"
-              role="img"
-              aria-label="Sample action photo placeholder, vertical format"
-            >
-              <span className="ph-label">
-                Your athlete here
-                <br />
-                Edited action shot
-              </span>
-              <div className="p-name">Game Action</div>
-              <div className="p-meta">Shot &amp; edited by M.A.P.</div>
+          <div>
+            <div className="hero-feature">
+              <img
+                src="/photos/poster-parker-kipp.jpg"
+                alt="Custom dual-sport athlete poster — baseball and hockey"
+              />
             </div>
-            <div
-              className="vframe offset"
-              role="img"
-              aria-label="Sample phone wallpaper placeholder, vertical format"
-            >
-              <span className="ph-label">
-                Custom artwork
-                <br />
-                Phone wallpaper
-              </span>
-              <div className="p-name">Player Name</div>
-              <div className="p-meta">#12 · Varsity · 2026</div>
-            </div>
+            <div className="hero-caption">Signature poster edit · M.A.P.</div>
           </div>
         </div>
       </header>
@@ -156,8 +136,28 @@ export default function Home() {
               Every piece is designed from your athlete&apos;s real game action
               — bold typography, cinematic lighting, delivered as a
               high-resolution digital file you can print anywhere or share
-              everywhere.
+              everywhere. Recent poster edits:
             </p>
+          </div>
+          <div className="poster-strip">
+            <div className="poster-card">
+              <img
+                src="/photos/poster-jasmine.jpg"
+                alt="Custom figure skating athlete poster"
+              />
+            </div>
+            <div className="poster-card">
+              <img
+                src="/photos/poster-jett.jpg"
+                alt="Custom hockey athlete poster"
+              />
+            </div>
+            <div className="poster-card">
+              <img
+                src="/photos/poster-parker.jpg"
+                alt="Custom baseball athlete poster"
+              />
+            </div>
           </div>
           <div className="lineup">
             <div className="product">
@@ -218,16 +218,32 @@ export default function Home() {
           </div>
           <div className="work-row">
             <div className="work">
-              <span>Baseball · Game action</span>
-            </div>
-            <div className="work">
-              <span>Football · Under the lights</span>
-            </div>
-            <div className="work">
+              <img
+                src="/photos/action-hockey-dark.jpg"
+                alt="Youth hockey player skating with the puck"
+              />
               <span>Hockey · Game action</span>
             </div>
             <div className="work">
-              <span>Athlete artwork</span>
+              <img
+                src="/photos/action-dance.jpg"
+                alt="Dance team lift during a competition routine"
+              />
+              <span>Dance · Competition day</span>
+            </div>
+            <div className="work">
+              <img
+                src="/photos/action-hockey-white.jpg"
+                alt="Hockey player follow-through on a shot"
+              />
+              <span>Hockey · The release</span>
+            </div>
+            <div className="work">
+              <img
+                src="/photos/action-skater.jpg"
+                alt="Figure skater in a low spiral on the ice"
+              />
+              <span>Figure skating · On the edge</span>
             </div>
           </div>
         </div>
@@ -252,11 +268,14 @@ export default function Home() {
               </div>
               <div className="field">
                 <label htmlFor="f-sport">Sport &amp; level</label>
-                <select id="f-sport" defaultValue="Baseball — High School">
-                  <option>Baseball — High School</option>
+                <select id="f-sport" defaultValue="Hockey — Youth">
+                  <option>Hockey — Youth</option>
+                  <option>Hockey — High School</option>
                   <option>Baseball — Youth</option>
-                  <option>Football — High School</option>
-                  <option>Football — Youth</option>
+                  <option>Baseball — High School</option>
+                  <option>Figure Skating</option>
+                  <option>Dance</option>
+                  <option>Football</option>
                   <option>Other (tell me below)</option>
                 </select>
               </div>
@@ -266,7 +285,7 @@ export default function Home() {
               </div>
               <div className="field">
                 <label htmlFor="f-loc">Field / location</label>
-                <input id="f-loc" type="text" placeholder="Field name or address" />
+                <input id="f-loc" type="text" placeholder="Field, rink, or venue" />
               </div>
               <button className="btn" type="button">
                 Request this date
@@ -302,9 +321,8 @@ export default function Home() {
       <footer>
         <div className="wrap foot-grid">
           <div>
-            <div className="logo" style={{ marginBottom: ".5rem" }}>
-              <span className="mark">M.A.P.</span>
-              <span className="sub">Madden Action Photography</span>
+            <div className="logo-foot" style={{ marginBottom: ".7rem" }}>
+              <img src="/map-logo.png" alt="M.A.P. Sports Photography" />
             </div>
             <div>Today&apos;s Game. Tomorrow&apos;s Memory.</div>
             <div>Portland &amp; Vancouver Metro</div>
