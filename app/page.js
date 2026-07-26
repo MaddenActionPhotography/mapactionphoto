@@ -1,4 +1,84 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+const POSTERS = [
+  { src: "/photos/poster-parker-kipp.jpg", alt: "Custom dual-sport athlete poster — baseball and hockey" },
+  { src: "/photos/poster-jasmine.jpg", alt: "Custom figure skating athlete poster" },
+  { src: "/photos/poster-jett.jpg", alt: "Custom hockey athlete poster" },
+  { src: "/photos/poster-parker.jpg", alt: "Custom baseball athlete poster" },
+];
+
+const WORK_HOCKEY = [
+  { src: "/photos/action-hockey-dark.jpg", alt: "Youth hockey player skating with the puck", label: "Hockey · Game action" },
+  { src: "/photos/action-hockey-white.jpg", alt: "Hockey player follow-through on a shot", label: "Hockey · The release" },
+];
+
+const WORK_ARTISTIC = [
+  { src: "/photos/action-dance.jpg", alt: "Dance team lift during a competition routine", label: "Dance · Competition day" },
+  { src: "/photos/action-skater.jpg", alt: "Figure skater in a low spiral on the ice", label: "Figure skating · On the edge" },
+];
+
+function Rotator({ photos, className, aspect, onOpen, startIndex = 0, showLabel = false }) {
+  const [i, setI] = useState(startIndex);
+
+  useEffect(() => {
+    if (photos.length < 2) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = setInterval(() => setI((v) => (v + 1) % photos.length), 5000);
+    return () => clearInterval(t);
+  }, [photos.length]);
+
+  const current = photos[i];
+
+  return (
+    <div
+      className={`rotator ${className || ""}`}
+      style={{ aspectRatio: aspect }}
+      role="button"
+      tabIndex={0}
+      aria-label={`${current.alt} — click to enlarge`}
+      onClick={() => onOpen(current)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpen(current);
+        }
+      }}
+    >
+      {photos.map((p, idx) => (
+        <img key={p.src} src={p.src} alt={idx === i ? p.alt : ""} className={idx === i ? "active" : ""} />
+      ))}
+      {showLabel && current.label ? <span className="rot-label">{current.label}</span> : null}
+      {photos.length > 1 ? (
+        <div className="rot-dots" aria-hidden="true">
+          {photos.map((p, idx) => (
+            <i key={p.src} className={idx === i ? "on" : ""} />
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export default function Home() {
+  const [lightbox, setLightbox] = useState(null);
+
+  useEffect(() => {
+    if (!lightbox) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") setLightbox(null);
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [lightbox]);
+
+  const open = (photo) => setLightbox(photo);
+
   return (
     <>
       <nav>
@@ -54,13 +134,15 @@ export default function Home() {
             </div>
           </div>
           <div>
-            <div className="hero-feature">
-              <img
-                src="/photos/poster-parker-kipp.jpg"
-                alt="Custom dual-sport athlete poster — baseball and hockey"
-              />
+            <Rotator
+              photos={POSTERS}
+              className="hero-feature"
+              aspect="16 / 10"
+              onOpen={open}
+            />
+            <div className="hero-caption">
+              Signature poster edits · click any photo to enlarge
             </div>
-            <div className="hero-caption">Signature poster edit · M.A.P.</div>
           </div>
         </div>
       </header>
@@ -140,24 +222,24 @@ export default function Home() {
             </p>
           </div>
           <div className="poster-strip">
-            <div className="poster-card">
-              <img
-                src="/photos/poster-jasmine.jpg"
-                alt="Custom figure skating athlete poster"
-              />
-            </div>
-            <div className="poster-card">
-              <img
-                src="/photos/poster-jett.jpg"
-                alt="Custom hockey athlete poster"
-              />
-            </div>
-            <div className="poster-card">
-              <img
-                src="/photos/poster-parker.jpg"
-                alt="Custom baseball athlete poster"
-              />
-            </div>
+            {POSTERS.slice(1).map((p) => (
+              <div
+                key={p.src}
+                className="poster-card"
+                role="button"
+                tabIndex={0}
+                aria-label={`${p.alt} — click to enlarge`}
+                onClick={() => open(p)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    open(p);
+                  }
+                }}
+              >
+                <img src={p.src} alt={p.alt} />
+              </div>
+            ))}
           </div>
           <div className="lineup">
             <div className="product">
@@ -186,37 +268,27 @@ export default function Home() {
           <div className="sec-head">
             <span className="eyebrow">Recent work</span>
             <h2>Shot from the sideline.</h2>
-            <p>Real games, real athletes, edited one frame at a time.</p>
+            <p>
+              Real games, real athletes, edited one frame at a time. Click any
+              photo for a closer look.
+            </p>
           </div>
           <div className="work-row">
-            <div className="work">
-              <img
-                src="/photos/action-hockey-dark.jpg"
-                alt="Youth hockey player skating with the puck"
-              />
-              <span>Hockey · Game action</span>
-            </div>
-            <div className="work">
-              <img
-                src="/photos/action-dance.jpg"
-                alt="Dance team lift during a competition routine"
-              />
-              <span>Dance · Competition day</span>
-            </div>
-            <div className="work">
-              <img
-                src="/photos/action-hockey-white.jpg"
-                alt="Hockey player follow-through on a shot"
-              />
-              <span>Hockey · The release</span>
-            </div>
-            <div className="work">
-              <img
-                src="/photos/action-skater.jpg"
-                alt="Figure skater in a low spiral on the ice"
-              />
-              <span>Figure skating · On the edge</span>
-            </div>
+            <Rotator
+              photos={WORK_HOCKEY}
+              className="work-tile"
+              aspect="3 / 2"
+              onOpen={open}
+              showLabel
+            />
+            <Rotator
+              photos={WORK_ARTISTIC}
+              className="work-tile"
+              aspect="3 / 2"
+              onOpen={open}
+              startIndex={1}
+              showLabel
+            />
           </div>
         </div>
       </section>
@@ -315,6 +387,29 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {lightbox ? (
+        <div
+          className="lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightbox.alt}
+          onClick={() => setLightbox(null)}
+        >
+          <button
+            className="lightbox-close"
+            aria-label="Close enlarged photo"
+            onClick={() => setLightbox(null)}
+          >
+            ✕
+          </button>
+          <img
+            src={lightbox.src}
+            alt={lightbox.alt}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      ) : null}
     </>
   );
 }
