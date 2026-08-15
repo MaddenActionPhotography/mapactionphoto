@@ -61,6 +61,115 @@ function Rotator({ photos, className, aspect, onOpen, startIndex = 0, showLabel 
   );
 }
 
+function BookingForm() {
+  const [status, setStatus] = useState("idle"); // idle | sending | done | error
+  const [errorMsg, setErrorMsg] = useState("");
+
+  async function submit(e) {
+    e.preventDefault();
+    const f = e.currentTarget;
+    const payload = {
+      name: f.name.value,
+      email: f.email.value,
+      phone: f.phone.value,
+      sport: f.sport.value,
+      game_date: f.game_date.value,
+      location: f.location.value,
+      notes: f.notes.value,
+      website: f.website.value,
+    };
+    setStatus("sending");
+    setErrorMsg("");
+    try {
+      const res = await fetch("/api/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error || "Something went wrong.");
+      setStatus("done");
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(err.message || "Something went wrong. Please try again.");
+    }
+  }
+
+  if (status === "done") {
+    return (
+      <div className="panel">
+        <h3>Request received</h3>
+        <p>
+          Thanks — your request is in. I&apos;ll confirm availability and get
+          back to you within 24 hours to lock in your date.
+        </p>
+        <p className="pay-note">
+          Once confirmed, a $20 booking fee holds your slot — Venmo, PayPal,
+          or card.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form className="panel" onSubmit={submit}>
+      <h3>Request coverage</h3>
+      <div className="field">
+        <label htmlFor="f-name">Your name</label>
+        <input id="f-name" name="name" type="text" required placeholder="First and last name" />
+      </div>
+      <div className="field">
+        <label htmlFor="f-email">Email</label>
+        <input id="f-email" name="email" type="email" required placeholder="you@example.com" />
+      </div>
+      <div className="field">
+        <label htmlFor="f-phone">Phone (optional)</label>
+        <input id="f-phone" name="phone" type="tel" placeholder="(503) 555-0123" />
+      </div>
+      <div className="field">
+        <label htmlFor="f-sport">Sport &amp; level</label>
+        <select id="f-sport" name="sport" defaultValue="Hockey — Youth">
+          <option>Hockey — Youth</option>
+          <option>Hockey — High School</option>
+          <option>Baseball — Youth</option>
+          <option>Baseball — High School</option>
+          <option>Figure Skating</option>
+          <option>Dance</option>
+          <option>Football</option>
+          <option>Other (tell me below)</option>
+        </select>
+      </div>
+      <div className="field">
+        <label htmlFor="f-date">Game date</label>
+        <input id="f-date" name="game_date" type="date" />
+      </div>
+      <div className="field">
+        <label htmlFor="f-loc">Field / location</label>
+        <input id="f-loc" name="location" type="text" placeholder="Field, rink, or venue" />
+      </div>
+      <div className="field">
+        <label htmlFor="f-notes">Anything else? (optional)</label>
+        <textarea id="f-notes" name="notes" rows={3} placeholder="Team name, jersey number, game time…" />
+      </div>
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ position: "absolute", left: "-9999px", opacity: 0 }}
+      />
+      {status === "error" ? <p className="form-error">{errorMsg}</p> : null}
+      <button className="btn" type="submit" disabled={status === "sending"}>
+        {status === "sending" ? "Sending…" : "Request this date"}
+      </button>
+      <p className="pay-note">
+        Pay your way: Venmo, PayPal, or card. A $20 booking fee holds your date.
+      </p>
+    </form>
+  );
+}
+
 export default function Home() {
   const [lightbox, setLightbox] = useState(null);
 
@@ -304,41 +413,7 @@ export default function Home() {
             </p>
           </div>
           <div className="split">
-            <div className="panel">
-              <h3>Request coverage</h3>
-              <div className="field">
-                <label htmlFor="f-name">Your name</label>
-                <input id="f-name" type="text" placeholder="First and last name" />
-              </div>
-              <div className="field">
-                <label htmlFor="f-sport">Sport &amp; level</label>
-                <select id="f-sport" defaultValue="Hockey — Youth">
-                  <option>Hockey — Youth</option>
-                  <option>Hockey — High School</option>
-                  <option>Baseball — Youth</option>
-                  <option>Baseball — High School</option>
-                  <option>Figure Skating</option>
-                  <option>Dance</option>
-                  <option>Football</option>
-                  <option>Other (tell me below)</option>
-                </select>
-              </div>
-              <div className="field">
-                <label htmlFor="f-date">Game date</label>
-                <input id="f-date" type="date" />
-              </div>
-              <div className="field">
-                <label htmlFor="f-loc">Field / location</label>
-                <input id="f-loc" type="text" placeholder="Field, rink, or venue" />
-              </div>
-              <button className="btn" type="button">
-                Request this date
-              </button>
-              <p className="pay-note">
-                Pay your way: Venmo, PayPal, or card. A $20 booking fee holds
-                your date.
-              </p>
-            </div>
+            <BookingForm />
             <div className="panel">
               <h3>Client galleries</h3>
               <p>
